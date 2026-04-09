@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Nombre Apellido</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bg:#fff;
+    --bg-alt:#f7f7f7;
+    --text:#333;
+    --text-light:#555;
+    --text-muted:#888;
+    --primary:#1565c0;
+    --primary-light:#e3f0fc;
+    --border:#e8e8e8;
+    --sans:'Lato',sans-serif;
+  }
+
+  html{scroll-behavior:smooth;font-size:16px}
+  body{font-family:var(--sans);color:var(--text);background:var(--bg);line-height:1.7}
+  a{color:var(--primary);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);box-shadow:0 1px 3px rgba(0,0,0,.06);height:56px;display:flex;align-items:center}
+  .nav-inner{max-width:1100px;width:100%;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+  .nav-brand{font-weight:700;font-size:1.05rem;color:var(--text)}
+  .nav-links{list-style:none;display:flex;gap:1.6rem}
+  .nav-links a{font-size:.88rem;font-weight:400;color:var(--text);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--primary);text-decoration:none}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px}
+  .hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;transition:.3s}
+
+  /* LAYOUT */
+  .page{max-width:1100px;margin:0 auto;padding:80px 2rem 3rem;display:grid;grid-template-columns:280px 1fr;gap:3.5rem;align-items:start}
+
+  /* SIDEBAR */
+  .sidebar{position:sticky;top:80px;text-align:center;padding:2rem 1rem}
+  .avatar{width:190px;height:190px;border-radius:50%;overflow:hidden;margin:0 auto 1.2rem;background:var(--border);display:flex;align-items:center;justify-content:center}
+  .avatar svg{width:64px;height:64px;stroke:var(--text-muted);stroke-width:1.2}
+  .sidebar h1{font-size:1.5rem;font-weight:700;margin-bottom:.2rem}
+  .sidebar .role{font-size:.95rem;color:var(--text-light);font-weight:300;margin-bottom:.15rem}
+  .sidebar .institution{font-size:.88rem;margin-bottom:1.2rem}
+  .sidebar .institution a{color:var(--text-light);font-weight:400}
+  .social-icons{display:flex;justify-content:center;gap:.7rem;margin-bottom:1.4rem;flex-wrap:wrap}
+  .social-icons a{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--text);color:#fff;transition:background .2s;font-size:.75rem;font-weight:700}
+  .social-icons a:hover{background:var(--primary);text-decoration:none}
+  .sidebar-interests,.sidebar-education{text-align:left;margin-top:1.5rem}
+  .sidebar-interests h3,.sidebar-education h3{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text);margin-bottom:.6rem}
+  .sidebar-interests ul,.sidebar-education ul{list-style:none}
+  .sidebar-interests li{font-size:.88rem;color:var(--text-light);padding:.15rem 0;padding-left:1.2rem;position:relative}
+  .sidebar-interests li::before{content:"▸";position:absolute;left:0;color:var(--primary);font-size:.8rem}
+  .sidebar-education li{font-size:.86rem;color:var(--text-light);padding:.4rem 0;border-left:2px solid var(--border);padding-left:1rem;margin-left:.3rem}
+  .sidebar-education li strong{color:var(--text);font-weight:700;display:block;font-size:.85rem}
+  .sidebar-education li em{font-style:normal;color:var(--text-muted);font-size:.8rem}
+
+  /* MAIN */
+  .main{min-width:0}
+  .section{margin-bottom:3.5rem}
+  .section-header{display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;padding-bottom:.5rem;border-bottom:2px solid var(--border)}
+  .section-header svg{width:22px;height:22px;stroke:var(--primary);stroke-width:2;flex-shrink:0}
+  .section-header h2{font-size:1.35rem;font-weight:700}
+
+  /* About */
+  .about-text{font-size:.95rem;color:var(--text-light);line-height:1.8}
+  .about-text p+p{margin-top:.8rem}
+
+  /* News */
+  .news-list{display:flex;flex-direction:column;gap:.5rem}
+  .news-item{display:flex;gap:1rem;font-size:.9rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+  .news-date{flex-shrink:0;width:110px;font-weight:700;color:var(--primary);font-size:.82rem;padding-top:.1rem}
+  .news-item p{color:var(--text-light)}
+
+  /* Experience */
+  .timeline{position:relative;padding-left:1.6rem;border-left:2px solid var(--border)}
+  .timeline-item{position:relative;padding-bottom:2rem}
+  .timeline-item:last-child{padding-bottom:0}
+  .timeline-dot{position:absolute;left:-1.95rem;top:.3rem;width:12px;height:12px;border-radius:50%;background:var(--primary);border:2px solid #fff;box-shadow:0 0 0 2px var(--primary)}
+  .timeline-item h3{font-size:1rem;font-weight:700;margin-bottom:.1rem}
+  .timeline-meta{font-size:.84rem;color:var(--text-muted);margin-bottom:.4rem}
+  .timeline-meta a{color:var(--primary)}
+  .timeline-item p{font-size:.9rem;color:var(--text-light);line-height:1.7}
+
+  /* Publications */
+  .pub{padding:1.2rem 0;border-bottom:1px solid var(--border)}
+  .pub:last-child{border-bottom:none}
+  .pub-title{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
+  .pub-title a{color:var(--text)}
+  .pub-title a:hover{color:var(--primary)}
+  .pub-authors{font-size:.86rem;color:var(--text-light);margin-bottom:.15rem}
+  .pub-venue{font-size:.84rem;color:var(--text-muted);font-style:italic;margin-bottom:.4rem}
+  .pub-links{display:flex;gap:.6rem;flex-wrap:wrap}
+  .pub-btn{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:.3rem .7rem;border-radius:4px;border:1px solid var(--primary);color:var(--primary);transition:background .2s,color .2s;display:inline-block}
+  .pub-btn:hover{background:var(--primary);color:#fff;text-decoration:none}
+  .see-all{display:inline-block;margin-top:1rem;font-size:.88rem;font-weight:700;color:var(--primary)}
+
+  /* Projects */
+  .projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .project-card{padding:1.2rem 1.4rem;border-radius:8px;border:1px solid var(--border);transition:border-color .2s}
+  .project-card:hover{border-color:var(--primary)}
+  .project-badge{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .55rem;border-radius:3px;margin-bottom:.6rem}
+  .project-badge.active{background:#e8f5e9;color:#2e7d32}
+  .project-badge.done{background:var(--primary-light);color:var(--primary)}
+  .project-card h3{font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+  .project-card p{font-size:.85rem;color:var(--text-light);line-height:1.6}
+  .project-card .funding{font-size:.8rem;color:var(--primary);font-weight:700;margin-top:.5rem}
+
+  /* Teaching */
+  .teaching-grid{display:flex;flex-direction:column;gap:.8rem}
+  .course-card{display:grid;grid-template-columns:70px 1fr;gap:1rem;padding:1rem 1.2rem;border-radius:8px;border:1px solid var(--border)}
+  .course-code{font-size:.8rem;font-weight:900;color:var(--primary);text-align:center;align-self:center;line-height:1.3}
+  .course-card h3{font-size:.92rem;font-weight:700;margin-bottom:.15rem}
+  .course-card p{font-size:.84rem;color:var(--text-muted)}
+
+  /* Contact */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+  .contact-info{display:flex;flex-direction:column;gap:1rem}
+  .contact-row{display:flex;align-items:center;gap:.8rem;font-size:.9rem}
+  .contact-row svg{width:20px;height:20px;stroke:var(--primary);stroke-width:2;flex-shrink:0}
+  .contact-form{display:flex;flex-direction:column;gap:.8rem}
+  .contact-form input,.contact-form textarea{font-family:var(--sans);font-size:.9rem;padding:.7rem .9rem;border-radius:5px;border:1px solid var(--border);outline:none;transition:border-color .2s;background:var(--bg)}
+  .contact-form input:focus,.contact-form textarea:focus{border-color:var(--primary)}
+  .contact-form textarea{min-height:110px;resize:vertical}
+  .contact-form button{align-self:flex-start;font-family:var(--sans);font-size:.85rem;font-weight:700;padding:.65rem 1.6rem;border:none;border-radius:5px;background:var(--primary);color:#fff;cursor:pointer;transition:background .2s}
+  .contact-form button:hover{background:#0d47a1}
+
+  footer{text-align:center;padding:2rem;font-size:.78rem;color:var(--text-muted);border-top:1px solid var(--border);max-width:1100px;margin:0 auto}
+
+  .fade{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+  .fade.show{opacity:1;transform:translateY(0)}
+
+  @media(max-width:860px){
+    .page{grid-template-columns:1fr;gap:2rem;padding-top:70px}
+    .sidebar{position:static;padding:1rem 0}
+    .projects-grid,.contact-wrap{grid-template-columns:1fr}
+    .nav-links{display:none;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:#fff;padding:1rem 2rem;gap:.8rem;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+    .nav-links.open{display:flex}
+    .hamburger{display:block}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">Dr. Nombre Apellido</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about">Inicio</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#publicaciones">Publicaciones</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#docencia">Docencia</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+  <aside class="sidebar">
+    <div class="avatar">
+      <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+    </div>
+    <h1>Dr. Nombre Apellido</h1>
+    <p class="role">Investigador en Genómica Computacional</p>
+    <p class="institution"><a href="#">Universidad del Valle</a></p>
+
+    <div class="social-icons">
+      <a href="#" title="Email">✉</a>
+      <a href="#" title="Google Scholar">GS</a>
+      <a href="#" title="ORCID">ID</a>
+      <a href="#" title="GitHub">GH</a>
+      <a href="#" title="ResearchGate">RG</a>
+    </div>
+
+    <div class="sidebar-interests">
+      <h3>Intereses</h3>
+      <ul>
+        <li>Genómica Comparada</li>
+        <li>Bioinformática</li>
+        <li>Evolución Molecular</li>
+        <li>Machine Learning aplicado</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-education">
+      <h3>Formación</h3>
+      <ul>
+        <li><strong>PhD en Ciencias Biológicas, 2015</strong><em>Universidad Nacional de Colombia</em></li>
+        <li><strong>Postdoc, 2015–2018</strong><em>Max Planck Institute for Evolutionary Biology</em></li>
+        <li><strong>BSc en Biología, 2010</strong><em>Universidad del Valle</em></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div id="about" class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+        <h2>Sobre mí</h2>
+      </div>
+      <div class="about-text">
+        <p>¡Hola! Soy investigador en ciencias biológicas con énfasis en genómica computacional. Mi trabajo se centra en comprender los mecanismos evolutivos a nivel molecular utilizando herramientas bioinformáticas de última generación.</p>
+        <p>Dirijo el Laboratorio de Genómica Comparada en la Universidad del Valle desde 2018. He publicado más de 30 artículos en revistas indexadas y he sido investigador principal en 5 proyectos financiados por Minciencias y cooperación internacional.</p>
+        <p>Mis intereses incluyen la genómica de plantas andinas, la evolución adaptativa en organismos de alta montaña y el desarrollo de herramientas computacionales para el análisis de datos ómicos.</p>
+      </div>
+    </div>
+
+    <div class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <h2>Noticias recientes</h2>
+      </div>
+      <div class="news-list">
+        <div class="news-item"><span class="news-date">Mar 2026</span><p>Artículo aceptado en <strong>Nature Ecology & Evolution</strong> sobre elementos reguladores en plantas andinas.</p></div>
+        <div class="news-item"><span class="news-date">Ene 2026</span><p>Charla invitada en el <strong>Congreso Latinoamericano de Genómica</strong> en Buenos Aires.</p></div>
+        <div class="news-item"><span class="news-date">Oct 2025</span><p>Nuevo proyecto <strong>EpiPredict</strong> financiado por Colciencias.</p></div>
+        <div class="news-item"><span class="news-date">Jul 2025</span><p>Dos estudiantes del laboratorio defienden exitosamente sus tesis de maestría.</p></div>
+      </div>
+    </div>
+
+    <div id="experiencia" class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        <h2>Experiencia profesional</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <h3>Director, Laboratorio de Genómica Comparada</h3>
+          <div class="timeline-meta"><a href="#">Universidad del Valle</a> · Sep 2018 – Presente · Cali, Colombia</div>
+          <p>Dirección de un equipo de investigación enfocado en genómica comparada de plantas andinas, evolución molecular y bioinformática aplicada.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <h3>Investigador Postdoctoral</h3>
+          <div class="timeline-meta"><a href="#">Max Planck Institute for Evolutionary Biology</a> · Ene 2015 – Ago 2018 · Plön, Alemania</div>
+          <p>Investigación en genómica poblacional y evolución adaptativa. Desarrollo de pipelines bioinformáticos para datos de secuenciación de nueva generación.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <h3>Asistente de Investigación</h3>
+          <div class="timeline-meta"><a href="#">Universidad Nacional de Colombia</a> · 2011 – 2015 · Bogotá, Colombia</div>
+          <p>Investigación doctoral en filogenia molecular y evolución de plantas neotropicales.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="publicaciones" class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <h2>Publicaciones</h2>
+      </div>
+      <p style="font-size:.9rem;color:var(--text-muted);margin-bottom:1rem">Ver mi <a href="#">perfil de Google Scholar</a> para la lista completa.</p>
+
+      <div class="pub">
+        <div class="pub-title"><a href="#">Comparative genomics reveals conserved regulatory elements in Andean plant species</a></div>
+        <div class="pub-authors"><strong>Apellido N.</strong>, García M., Torres L., Ramírez P. (2024)</div>
+        <div class="pub-venue">Nature Ecology & Evolution, 8(3), 245–259.</div>
+        <div class="pub-links"><a class="pub-btn" href="#">PDF</a><a class="pub-btn" href="#">DOI</a><a class="pub-btn" href="#">Citar</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-title"><a href="#">A machine learning framework for predicting gene expression from epigenomic data</a></div>
+        <div class="pub-authors">Torres L., <strong>Apellido N.</strong>, Méndez J. (2024)</div>
+        <div class="pub-venue">Bioinformatics, 40(1), btae012.</div>
+        <div class="pub-links"><a class="pub-btn" href="#">PDF</a><a class="pub-btn" href="#">GitHub</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-title"><a href="#">Phylogenomic analysis of tropical biodiversity hotspots using long-read sequencing</a></div>
+        <div class="pub-authors"><strong>Apellido N.</strong>, Herrera C., Díaz F. (2023)</div>
+        <div class="pub-venue">Molecular Biology and Evolution, 40(9), msad198.</div>
+        <div class="pub-links"><a class="pub-btn" href="#">PDF</a><a class="pub-btn" href="#">DOI</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-title"><a href="#">Structural variants and adaptive evolution in high-altitude organisms</a></div>
+        <div class="pub-authors">Ramírez P., <strong>Apellido N.</strong>, López A. (2023)</div>
+        <div class="pub-venue">Genome Research, 33(4), 612–625.</div>
+        <div class="pub-links"><a class="pub-btn" href="#">DOI</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-title"><a href="#">De novo genome assembly of an endemic Colombian orchid species</a></div>
+        <div class="pub-authors"><strong>Apellido N.</strong>, Valencia R., Peña S. (2022)</div>
+        <div class="pub-venue">The Plant Journal, 112(2), 401–415.</div>
+        <div class="pub-links"><a class="pub-btn" href="#">PDF</a><a class="pub-btn" href="#">Datos</a></div>
+      </div>
+
+      <a href="#" class="see-all">Ver todas las publicaciones »</a>
+    </div>
+
+    <div id="proyectos" class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+        <h2>Proyectos</h2>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card"><span class="project-badge active">En curso</span><h3>GenomAndes</h3><p>Secuenciación y análisis genómico de plantas endémicas de los Andes colombianos para entender patrones de especiación.</p><div class="funding">Minciencias · 2023–2026</div></div>
+        <div class="project-card"><span class="project-badge active">En curso</span><h3>EpiPredict</h3><p>Modelos de aprendizaje automático para predecir expresión génica a partir de marcas epigenómicas en cultivos tropicales.</p><div class="funding">Colciencias · 2024–2027</div></div>
+        <div class="project-card"><span class="project-badge done">Finalizado</span><h3>BioDiv-Seq</h3><p>Inventario genómico de la biodiversidad del Pacífico colombiano mediante secuenciación ambiental (eDNA).</p><div class="funding">WWF + Univalle · 2020–2023</div></div>
+        <div class="project-card"><span class="project-badge done">Finalizado</span><h3>OrchidGenome</h3><p>Primer ensamblaje de novo del genoma de la orquídea endémica Cattleya trianae.</p><div class="funding">Minciencias · 2019–2022</div></div>
+      </div>
+    </div>
+
+    <div id="docencia" class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <h2>Docencia</h2>
+      </div>
+      <div class="teaching-grid">
+        <div class="course-card"><div class="course-code">BIO<br>401</div><div><h3>Genómica Computacional</h3><p>Posgrado · Semestre I y II</p></div></div>
+        <div class="course-card"><div class="course-code">BIO<br>305</div><div><h3>Bioinformática Aplicada</h3><p>Pregrado · Semestre II</p></div></div>
+        <div class="course-card"><div class="course-code">BIO<br>520</div><div><h3>Seminario de Evolución Molecular</h3><p>Posgrado · Semestre I</p></div></div>
+        <div class="course-card"><div class="course-code">BIO<br>201</div><div><h3>Biología Molecular</h3><p>Pregrado · Semestre I</p></div></div>
+      </div>
+    </div>
+
+    <div id="contacto" class="section fade">
+      <div class="section-header">
+        <svg fill="none" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 4 8 8 8-8"/></svg>
+        <h2>Contacto</h2>
+      </div>
+      <div class="contact-wrap">
+        <div class="contact-info">
+          <div class="contact-row">
+            <svg fill="none" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 4 8 8 8-8"/></svg>
+            <a href="mailto:nombre.apellido@correounivalle.edu.co">nombre.apellido@correounivalle.edu.co</a>
+          </div>
+          <div class="contact-row">
+            <svg fill="none" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Edificio 320, Oficina 3015 · Universidad del Valle, Cali</span>
+          </div>
+        </div>
+        <div class="contact-form">
+          <input type="text" placeholder="Nombre">
+          <input type="email" placeholder="Correo electrónico">
+          <textarea placeholder="Mensaje"></textarea>
+          <button type="button">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>© 2026 Dr. Nombre Apellido · Universidad del Valle · Cali, Colombia</footer>
+
+<script>
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open'))});
+</script>
+</body>
+</html>
